@@ -9,8 +9,8 @@
 2.  **Upload your files**
     *   Go to the "Files" tab
     *   Upload these files to `/home/saadkhan2003/mysite/appnew/`:
-        - `app.py`
-        - `main.py`
+        - `app.py` (Make sure it includes CORS configuration and latest error handling)
+        - `main.py` (Make sure it has the latest error handling)
         - `.env`
         - `requirements.txt`
 
@@ -21,17 +21,22 @@
          ```bash
          # Step 1: Go to your project directory
          cd /home/saadkhan2003/mysite/appnew
- 
+
          # Step 2: Create and activate virtual environment
          python3 -m venv venv
          source venv/bin/activate
- 
-         # Step 3: Install all required packages (THIS IS CRUCIAL)
-         pip install flask python-dotenv pytube google-generativeai flask_cors youtube-transcript-api
- 
+
+         # Step 3: Install all required packages (THIS IS CRUCIAL, RUN ONE BY ONE)
+         pip install flask
+         pip install python-dotenv
+         pip install pytube
+         pip install google-generativeai
+         pip install flask_cors
+         pip install youtube-transcript-api
+
          # Step 4: Verify installations
-          pip list | grep -E "flask|python-dotenv|pytube|google|flask_cors|youtube-transcript-api"
-          ```
+         pip list | grep -E "flask|python-dotenv|pytube|google|flask_cors|youtube-transcript-api"
+         ```
     *   Make sure no errors appear during installation
 
 4.  **Configure web app**
@@ -94,12 +99,19 @@
 
 2.  **Test the summarizer**
     *   Open your frontend (Netlify URL or local `index.html`)
+    *   Open browser developer tools (F12)
+    *   Go to Network tab in developer tools
     *   Paste a YouTube video ID or URL
     *   Click Summarize
+    *   In Network tab:
+        - Look for the request to `/summarize`
+        - Check if CORS headers are present
+        - Check response status code
+        - If you see a 500 error, check response body for error details
 
 ## Troubleshooting
 
-If you see "Error loading your PythonAnywhere-hosted site":
+If you see "Error loading your PythonAnywhere-hosted site" or a 500 error from Netlify:
 
 1.  **Check the log files**
     *   Go to the "Web" tab
@@ -107,8 +119,28 @@ If you see "Error loading your PythonAnywhere-hosted site":
     *   Click on these links to view the logs:
         - `saadkhan2003.pythonanywhere.com.error.log`
         - `saadkhan2003.pythonanywhere.com.server.log`
+    *   Look for the latest error messages in the logs. They will usually indicate the cause of the 500 error.
 
-2.  **Fix for "Something went wrong" Error**
+2.  **Common causes and fixes for 500 Internal Server Error**
+    *   **Missing API key:** Make sure you have set the `GEMINI_API_KEY` environment variable in your `.env` file.
+    *   **Incorrect file paths:** Double-check that all file paths in your WSGI file and application code are correct.
+    *   **Import errors:** If you see "ModuleNotFoundError" in the logs, make sure you have installed all the required packages.
+    *   **Code errors:** Carefully review your `app.py` and `main.py` files for any syntax errors or logical errors.
+    *   **Test the API manually:**
+        ```bash
+        # Test from the command line
+        curl -v "https://saadkhan2003.pythonanywhere.com/summarize?videoID=EgMcfcrOS0c"
+        
+        # Or use Python to test
+        python3 -c '
+        import requests
+        response = requests.get("https://saadkhan2003.pythonanywhere.com/summarize?videoID=EgMcfcrOS0c")
+        print(f"Status: {response.status_code}")
+        print(f"Response: {response.text}")
+        '
+        ```
+
+3.  **Fix for "Something went wrong" Error**
     *   This usually means there's an error in your application. Follow these steps:
     
     a. **Check the error logs**
@@ -142,9 +174,7 @@ If you see "Error loading your PythonAnywhere-hosted site":
         chmod 644 app.py
         ```
 
-3.  **Fix for Module Not Found Errors**
-
-    For "ModuleNotFoundError: No module named 'google.generativeai'":
+4.  **Fix for Module Not Found Errors**
     *   This means the Google Generative AI package is not installed. Run:
         ```bash
         cd /home/saadkhan2003/mysite/appnew
@@ -153,62 +183,8 @@ If you see "Error loading your PythonAnywhere-hosted site":
         ```
     *   Go back to "Web" tab and click "Reload"
 
-    For "ModuleNotFoundError: No module named 'app'":
-    *   This error means Python cannot find your `app.py` file. Follow these steps:
-    
-    a. **Check file location**
-       * Go to Files tab
-       * Navigate to `/home/saadkhan2003/mysite/appnew/`
-       * Verify `app.py` is in this directory
-       * If not, upload it again
-    
-    b. **Check WSGI configuration**
-       * Go to Web tab
-       * Under "Code" section:
-           - Set "Source code" to: `/home/saadkhan2003/mysite/appnew`
-           - Set "Working directory" to: `/home/saadkhan2003/mysite/appnew`
-       * Click Save
-    
-    c. **Verify file permissions and content**
-       * Open a Bash console
-       * Run these commands:
-         ```bash
-         cd /home/saadkhan2003/mysite/appnew
-         ls -l app.py
-         # Should show read permissions (-rw-r--r--)
-         cat app.py
-         # Should show your Flask application code
-         python3
-         >>> import app
-         >>> # If no error, the file is found and valid
-         >>> exit()
-         ```
-    
-    d. **Test the environment**
-       * Still in the Bash console:
-         ```bash
-         source venv/bin/activate
-         pip list | grep Flask
-         # Should show Flask is installed
-         python3 -c "import sys; print(sys.path)"
-         # Should include /home/saadkhan2003/mysite/appnew
-         ```
-
-3.  **Try these steps**
-    *   Go to "Consoles" tab
-    *   Start a new Bash console
-    *   Run these commands:
-        ```bash
-        cd /home/saadkhan2003/mysite/appnew
-        source venv/bin/activate
-        pip install -r requirements.txt
-        ```
-    *   Go back to "Web" tab
-    *   Click "Reload saadkhan2003.pythonanywhere.com"
-
-4.  **Additional checks**
-    *   Verify the URL in `script.js` matches your PythonAnywhere domain
-    *   Look for errors in browser's developer console (F12)
+5.  **Fix for CORS error**
+    *   Make sure the `app.py` file includes the CORS configuration, allowing only `https://saadyoutubesummarizer.netlify.app`.
 
 ## Understanding the URLs
 

@@ -15,7 +15,8 @@ def get_transcript(video_url):
             text += entry["text"] + " "
         return text
     except Exception as e:
-        return f"Error: Could not fetch transcript - {e}"
+        print(f"Transcript error: {str(e)}")
+        return f"Error: Could not fetch transcript. Please check the video ID and try again. Original error: {e}"
 
 def summarize(transcript):
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -41,6 +42,11 @@ def summarize(transcript):
         response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
         return response.json()["candidates"][0]["content"]["parts"][0]["text"]
     except requests.exceptions.RequestException as e:
-        return f"Error: API request failed - {e}"
+        print(f"Gemini API request failed: {e}")
+        return f"Error: API request failed. Please check your API key and network connection. Original error: {e}"
     except (KeyError, IndexError) as e:
-        return f"Error: Could not parse API response - {e}"
+        print(f"Gemini API response parsing error: {e}")
+        return f"Error: Could not parse API response. Please check the API response format. Original error: {e}"
+    except Exception as e:
+        print(f"Gemini API unexpected error: {e}")
+        return f"Error: An unexpected error occurred during summarization. Original error: {e}"
