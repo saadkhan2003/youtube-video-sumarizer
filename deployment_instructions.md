@@ -9,7 +9,7 @@
 2.  **Upload your files**
     *   Go to the "Files" tab
     *   Upload these files to `/home/saadkhan2003/mysite/appnew/`:
-        - `app.py` (Make sure it includes CORS configuration and latest error handling)
+        - `app.py` (Make sure it includes CORS configuration and uses pytube for video details)
         - `main.py` (Make sure it has the latest error handling)
         - `.env`
         - `requirements.txt`

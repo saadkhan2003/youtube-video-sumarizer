@@ -3,6 +3,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import main  # Import the main.py file as a module
 import requests
+from pytube import YouTube
 
 load_dotenv()
 
@@ -14,30 +15,15 @@ def hello_world():
     return "<h1>YouTube Summarizer Backend is Running!</h1>"
 
 def get_video_details(video_id):
-    # Using oEmbed API which doesn't require an API key
-    url = f"https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v={video_id}&format=json"
-    print(f"Fetching video details from: {url}")
-    
     try:
-        response = requests.get(url)
-        print(f"Response status: {response.status_code}")
-        response.raise_for_status()
-        data = response.json()
-        print(f"Response data: {data}")
-        
+        yt = YouTube(f"https://www.youtube.com/watch?v={video_id}")
         return {
-            'title': data['title'],
-            'thumbnail': f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg",
-            'author': data['author_name']
+            'title': yt.title,
+            'thumbnail': yt.thumbnail_url,
+            'author': yt.author
         }
-    except requests.exceptions.RequestException as e:
-        print(f"Network error: {str(e)}")
-        return None
-    except (KeyError, ValueError) as e:
-        print(f"Data parsing error: {str(e)}")
-        return None
     except Exception as e:
-        print(f"Unexpected error: {str(e)}")
+        print(f"Pytube error: {str(e)}")
         return None
 
 @app.route('/summarize', methods=['GET'])
