@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Video Summarizer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fab fa-youtube"></i>
+                <span>Video Summarizer</span>
+            </div>
+        </nav>
+        
+        <main class="main-content">
+            <div class="search-container">
+                <div class="card">
+                    <h1>Summarize YouTube Videos</h1>
+                    <p class="subtitle">Enter a YouTube video ID to get a concise bullet-point summary</p>
+                    
+                    <form id="summaryForm" class="form-group">
+                        <div class="input-group">
+                            <i class="fas fa-link"></i>
+                            <input type="text" 
+                                   id="videoID" 
+                                   name="videoID" 
+                                   placeholder="Enter YouTube video ID or link"
+                                   class="input-field">
+                            <button type="button" id="pasteButton" class="paste-button">
+                                Paste
+                            </button>
+                        </div>
+                        <button type="submit" class="button">
+                            <i class="fas fa-magic"></i>
+                            Summarize
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="video-details" style="display: none;">
+                <div class="video-card">
+                    <img id="thumbnail" src="" alt="Video thumbnail" class="video-thumbnail">
+                    <div class="video-info">
+                        <h2 id="video-title" class="video-title"></h2>
+                        <p id="video-author" class="video-author"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="summary" class="summary-card"></div>
+            
+            <div class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Generating summary...</p>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Made with ❤️ using AI</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

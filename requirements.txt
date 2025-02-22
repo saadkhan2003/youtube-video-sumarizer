@@ -1,0 +1,6 @@
+Flask
+flask-cors
+youtube-transcript-api
+python-dotenv
+requests
+marked
