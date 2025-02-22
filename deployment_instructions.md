@@ -83,6 +83,7 @@
     *   Open `script.js`
     *   Find the fetch URL line
     *   Replace it with: `https://saadkhan2003.pythonanywhere.com/summarize`
+    *   **Important:** Make sure the URL is correct and matches your PythonAnywhere username.
 
 2.  **Deploy frontend**
     *   Option 1: Use Netlify
