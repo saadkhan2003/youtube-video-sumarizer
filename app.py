@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 import main  # Import the main.py file as a module
@@ -8,6 +9,12 @@ import requests
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app, resources={
+    r"/summarize": {
+        "origins": ["https://saadyoutubesummarizer.netlify.app", "http://localhost:5000"],
+        "methods": ["GET", "OPTIONS"]
+    }
+})
 CORS(app)  # Enable CORS for all routes
 
 def get_video_details(video_id):

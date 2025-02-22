@@ -14,21 +14,25 @@
         - `.env`
         - `requirements.txt`
 
-3.  **Set up virtual environment**
+3.  **IMPORTANT: Install Required Packages**
     *   Go to the "Consoles" tab
     *   Click "New Console" → "Bash"
-    *   Run these commands:
-        ```bash
-        cd /home/saadkhan2003/mysite/appnew
-        python3 -m venv venv
-        source venv/bin/activate
-        # Install required packages explicitly
-        pip install flask python-dotenv pytube google-generativeai
-        # Install any additional requirements
-        pip install -r requirements.txt
-        # Verify installations
-        pip list
-        ```
+    *   Copy and paste these commands one by one:
+         ```bash
+         # Step 1: Go to your project directory
+         cd /home/saadkhan2003/mysite/appnew
+
+         # Step 2: Create and activate virtual environment
+         python3 -m venv venv
+         source venv/bin/activate
+
+         # Step 3: Install all required packages (THIS IS CRUCIAL)
+         pip install flask python-dotenv pytube google-generativeai flask_cors
+
+         # Step 4: Verify installations
+         pip list | grep -E "flask|python-dotenv|pytube|google|flask_cors"
+         ```
+    *   Make sure no errors appear during installation
 
 4.  **Configure web app**
     *   Go to the "Web" tab
@@ -58,9 +62,15 @@
     print(f"Working directory: {os.getcwd()}")
     ```
 
-6.  **Reload web app**
+6.  **Final Steps**
+    *   Verify all packages are installed:
+        ```bash
+        source venv/bin/activate
+        pip list | grep -E "flask|python-dotenv|pytube|google"
+        ```
     *   Go back to "Web" tab
     *   Click "Reload saadkhan2003.pythonanywhere.com"
+    *   Check the error logs if any issues persist
 
 ## Frontend Setup
 
@@ -98,7 +108,41 @@ If you see "Error loading your PythonAnywhere-hosted site":
         - `saadkhan2003.pythonanywhere.com.error.log`
         - `saadkhan2003.pythonanywhere.com.server.log`
 
-2.  **Fix for Module Not Found Errors**
+2.  **Fix for "Something went wrong" Error**
+    *   This usually means there's an error in your application. Follow these steps:
+    
+    a. **Check the error logs**
+        ```bash
+        cd /home/saadkhan2003/mysite/appnew
+        source venv/bin/activate
+        # Try running the app locally first
+        python3 app.py
+        ```
+    
+    b. **Check your .env file and API key**
+        * Make sure your `.env` file is in the correct location: `/home/saadkhan2003/mysite/appnew/.env`
+        * Verify it contains your API keys:
+        ```bash
+        cat .env
+        # Should show: GEMINI_API_KEY=your_api_key_here
+        
+        # Test if Python can read the API key
+        python3 -c "
+        from dotenv import load_dotenv
+        import os
+        load_dotenv()
+        print('API Key:', os.getenv('GEMINI_API_KEY'))
+        "
+        # Should print your API key
+        ```
+    
+    c. **Check app.py permissions**
+        ```bash
+        ls -l app.py
+        chmod 644 app.py
+        ```
+
+3.  **Fix for Module Not Found Errors**
 
     For "ModuleNotFoundError: No module named 'google.generativeai'":
     *   This means the Google Generative AI package is not installed. Run:
