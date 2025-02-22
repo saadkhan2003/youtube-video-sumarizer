@@ -1,120 +1,175 @@
-# Deployment Instructions
-
-## Frontend Deployment (Netlify)
-
-1.  **Create a Netlify account:**
-    *   Go to [https://www.netlify.com/](https://www.netlify.com/) and sign up for a free account.
-2.  **Connect to your GitHub repository (Recommended):**
-    *   If you have your frontend files in a GitHub repository, connect your Netlify account to the repository.
-    *   Netlify will automatically deploy your website whenever you push changes to the repository.
-3.  **Manually deploy files (Alternative):**
-    *   If you don't want to use a GitHub repository, you can manually upload the `index.html`, `style.css`, and `script.js` files to Netlify.
-    *   Drag and drop the files into the Netlify dashboard.
-4.  **Your website is now deployed!**
-    *   Netlify will provide you with a unique URL for your website.
+# YouTube Video Summarizer Deployment Instructions
 
 ## Backend Deployment (PythonAnywhere)
 
-1.  **Create a PythonAnywhere account:**
-    *   Go to [https://www.pythonanywhere.com/](https://www.pythonanywhere.com/) and sign up for a free account.
-2.  **Create a new web app:**
-    *   Log in to your PythonAnywhere account.
-    *   Click on the "Web" tab.
-    *   Click "Add a new web app".
-    *   Select "Flask" as the web framework.
-    *   Choose Python 3.9 (or a later version).
-3.  **Upload your files:**
-    *   Go to the "Files" tab.
-    *   Upload the `app.py`, `main.py`, `.env`, and `requirements.txt` files to your PythonAnywhere account.
-4.  **Create a virtual environment and install dependencies:**
-    *   Go to the "Consoles" tab.
-    *   Start a new console.
-    *   Create a virtual environment: `python3 -m venv venv`
-    *   Activate the virtual environment: `source venv/bin/activate`
-    *   Install the dependencies: `pip install -r requirements.txt`
-5.  **Configure your web app:**
-    *   Go back to the "Web" tab.
-    *   Find the section "Code".
-    *   Set the "Source code" directory to the directory where you uploaded your files.
-    *   Set the "WSGI configuration file" to `/var/www/<your_username>_pythonanywhere_com_wsgi.py`.
-    *   **Important:** Replace `<your_username>` with your actual PythonAnywhere username.
-6.  **Create and modify the WSGI file:**
-    *   Go back to the "Files" tab.
-    *   If the WSGI file (`/var/www/<your_username>_pythonanywhere_com_wsgi.py`) doesn't exist, create a new file with that name.
-    *   **Important:** Replace `<your_username>` with your actual PythonAnywhere username.
-    *   Open the WSGI file and replace the existing content with the following:
+1.  **Create a PythonAnywhere account (if you haven't already)**
+    *   Go to [https://www.pythonanywhere.com/](https://www.pythonanywhere.com/)
+    *   Sign up/Login with username: saadkhan2003
 
+2.  **Upload your files**
+    *   Go to the "Files" tab
+    *   Upload these files to `/home/saadkhan2003/mysite/appnew/`:
+        - `app.py`
+        - `main.py`
+        - `.env`
+        - `requirements.txt`
+
+3.  **Set up virtual environment**
+    *   Go to the "Consoles" tab
+    *   Click "New Console" → "Bash"
+    *   Run these commands:
+        ```bash
+        cd /home/saadkhan2003/mysite/appnew
+        python3 -m venv venv
+        source venv/bin/activate
+        # Install required packages explicitly
+        pip install flask python-dotenv pytube google-generativeai
+        # Install any additional requirements
+        pip install -r requirements.txt
+        # Verify installations
+        pip list
+        ```
+
+4.  **Configure web app**
+    *   Go to the "Web" tab
+    *   Click "Add a new web app"
+    *   Choose "Manual Configuration"
+    *   Choose Python 3.9
+    *   Set "Source code" to: `/home/saadkhan2003/mysite/appnew`
+
+5.  **Set up WSGI file**
+    *   Go to the "Files" tab
+    *   Open: `/var/www/saadkhan2003_pythonanywhere_com_wsgi.py`
+    *   Replace everything with:
     ```python
     import os
     import sys
 
-    # Replace <your_username> with your PythonAnywhere username
-    # Replace <your_project_directory> with the name of your project directory (e.g., youtube-video-summarizer)
-    path = os.path.expanduser('~/<your_username>/<your_project_directory>')
+    # This path must exactly match where your app.py file is
+    path = '/home/saadkhan2003/mysite/appnew'
     if path not in sys.path:
         sys.path.append(path)
-
-    # Replace "app" with the name of your Flask app instance (if it's different)
-    # This is usually "app" if you followed the instructions
+        
+    # Import the Flask application
     from app import app as application
+
+    # Print debugging information
+    print(f"Python path: {sys.path}")
+    print(f"Working directory: {os.getcwd()}")
     ```
-    *   **Important:** Replace `<your_username>` with your PythonAnywhere username in the `path` variable.
-    *   **Important:** Replace `<your_project_directory>` with the name of your project directory (e.g., `youtube-video-summarizer`) in the `path` variable.
-    *   **Important:** Replace `"app"` with the name of your Flask app instance (if it's different). This is usually `"app"` if you followed the instructions.
-7.  **Reload your web app:**
-    *   Go back to the "Web" tab.
-    *   Click the "Reload" button to restart your web app.
 
-## Connecting Frontend and Backend
+6.  **Reload web app**
+    *   Go back to "Web" tab
+    *   Click "Reload saadkhan2003.pythonanywhere.com"
 
-1.  **Update the `script.js` file:**
-    *   In the `script.js` file, replace the URL `/summarize` with the URL of your deployed PythonAnywhere app (e.g., `https://<your_username>.pythonanywhere.com/summarize`).
+## Frontend Setup
 
-## Installing Requirements
+1.  **Update the backend URL**
+    *   Open `script.js`
+    *   Find the fetch URL line
+    *   Replace it with: `https://saadkhan2003.pythonanywhere.com/summarize`
 
-1.  **Create a virtual environment:**
-    *   Open a console in your PythonAnywhere account.
-    *   Run the following command: `python3 -m venv venv`
-2.  **Activate the virtual environment:**
-    *   Run the following command: `source venv/bin/activate`
-3.  **Install the requirements:**
-    *   Run the following command: `pip install -r requirements.txt`
-4.  **Run the Flask application:**
-    *   Make sure the virtual environment is activated.
-    *   Run the following command: `python app.py`
-    *   **Keep this terminal window open and running.**
+2.  **Deploy frontend**
+    *   Option 1: Use Netlify
+        - Sign up at [https://www.netlify.com/](https://www.netlify.com/)
+        - Upload `index.html`, `style.css`, and `script.js`
+    *   Option 2: Run locally
+        - Just open `index.html` in your browser
 
-## Debugging Tips
+## Testing
 
-If you are encountering a "404 Not Found" error, it likely means that the frontend is not correctly connecting to the backend API. Here are some things to check:
+1.  **Check if backend is running**
+    *   Visit: `https://saadkhan2003.pythonanywhere.com`
+    *   Should not show any error
 
-1.  **Ensure that the backend API is running correctly on PythonAnywhere:**
-    *   Go to the "Web" tab on PythonAnywhere and make sure that your web app is running.
-    *   Check the error logs for any errors.
-2.  **Ensure that the frontend `script.js` file is correctly pointing to the backend API URL:**
-    *   Open the `script.js` file and make sure that the `fetch` URL is correct. It should be pointing to your PythonAnywhere app URL (e.g., `https://<your_username>.pythonanywhere.com/summarize`).
-    *   Make sure that you have replaced `<your_username>` with your actual PythonAnywhere username.
-3.  **Check your browser's developer console for errors:**
-    *   Open your browser's developer console (usually by pressing F12).
-    *   Look for any errors related to the API request.
-    *   Check the "Network" tab to see if the API request is being sent and what the response is.
+2.  **Test the summarizer**
+    *   Open your frontend (Netlify URL or local `index.html`)
+    *   Paste a YouTube video ID or URL
+    *   Click Summarize
 
-## Running Locally
+## Troubleshooting
 
-1.  **Backend:**
-    *   Open a terminal in the project directory.
-    *   Create a virtual environment: `python3 -m venv venv`
-    *   Activate the virtual environment: `source venv/bin/activate`
-    *   Install the requirements: `pip install -r requirements.txt`
-   *   **Make sure the virtual environment is activated.**
-   *   Run the Flask application: `python app.py`
-   *   The backend API will be running at `http://127.0.0.1:5000`.
-2.  **Frontend:**
-   *   Open the `index.html` file in your browser.
-   *   Update the `script.js` file to point to the local backend API URL (`http://127.0.0.1:5000/summarize`).
+If you see "Error loading your PythonAnywhere-hosted site":
 
-**What is a WSGI file?**
+1.  **Check the log files**
+    *   Go to the "Web" tab
+    *   Look for the "Log files" section
+    *   Click on these links to view the logs:
+        - `saadkhan2003.pythonanywhere.com.error.log`
+        - `saadkhan2003.pythonanywhere.com.server.log`
 
-WSGI (Web Server Gateway Interface) is a standard interface between web servers and Python web applications. The WSGI file is a Python script that tells the web server how to run your Flask application. It essentially acts as a bridge between the web server and your application code.
+2.  **Fix for Module Not Found Errors**
 
-Now you should have a working YouTube video summarizer deployed on a website!
+    For "ModuleNotFoundError: No module named 'google.generativeai'":
+    *   This means the Google Generative AI package is not installed. Run:
+        ```bash
+        cd /home/saadkhan2003/mysite/appnew
+        source venv/bin/activate
+        pip install google-generativeai
+        ```
+    *   Go back to "Web" tab and click "Reload"
+
+    For "ModuleNotFoundError: No module named 'app'":
+    *   This error means Python cannot find your `app.py` file. Follow these steps:
+    
+    a. **Check file location**
+       * Go to Files tab
+       * Navigate to `/home/saadkhan2003/mysite/appnew/`
+       * Verify `app.py` is in this directory
+       * If not, upload it again
+    
+    b. **Check WSGI configuration**
+       * Go to Web tab
+       * Under "Code" section:
+           - Set "Source code" to: `/home/saadkhan2003/mysite/appnew`
+           - Set "Working directory" to: `/home/saadkhan2003/mysite/appnew`
+       * Click Save
+    
+    c. **Verify file permissions and content**
+       * Open a Bash console
+       * Run these commands:
+         ```bash
+         cd /home/saadkhan2003/mysite/appnew
+         ls -l app.py
+         # Should show read permissions (-rw-r--r--)
+         cat app.py
+         # Should show your Flask application code
+         python3
+         >>> import app
+         >>> # If no error, the file is found and valid
+         >>> exit()
+         ```
+    
+    d. **Test the environment**
+       * Still in the Bash console:
+         ```bash
+         source venv/bin/activate
+         pip list | grep Flask
+         # Should show Flask is installed
+         python3 -c "import sys; print(sys.path)"
+         # Should include /home/saadkhan2003/mysite/appnew
+         ```
+
+3.  **Try these steps**
+    *   Go to "Consoles" tab
+    *   Start a new Bash console
+    *   Run these commands:
+        ```bash
+        cd /home/saadkhan2003/mysite/appnew
+        source venv/bin/activate
+        pip install -r requirements.txt
+        ```
+    *   Go back to "Web" tab
+    *   Click "Reload saadkhan2003.pythonanywhere.com"
+
+4.  **Additional checks**
+    *   Verify the URL in `script.js` matches your PythonAnywhere domain
+    *   Look for errors in browser's developer console (F12)
+
+## Understanding the URLs
+
+- Backend URL: `https://saadkhan2003.pythonanywhere.com`
+- API Endpoint: `/summarize`
+- Full API URL: `https://saadkhan2003.pythonanywhere.com/summarize?videoID=your_video_id`
+
+The `/summarize` endpoint is defined in `app.py` and handles the video summarization requests.
