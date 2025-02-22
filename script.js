@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         showLoading();
 
-        fetch('http://127.0.0.1:5000/summarize?videoID=' + videoID)
+        fetch('https://saadkhan2003.pythonanywhere.com/summarize?videoID=' + videoID)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
