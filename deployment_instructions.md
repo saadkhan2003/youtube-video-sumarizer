@@ -21,17 +21,17 @@
          ```bash
          # Step 1: Go to your project directory
          cd /home/saadkhan2003/mysite/appnew
-
+ 
          # Step 2: Create and activate virtual environment
          python3 -m venv venv
          source venv/bin/activate
-
+ 
          # Step 3: Install all required packages (THIS IS CRUCIAL)
-         pip install flask python-dotenv pytube google-generativeai flask_cors
-
+         pip install flask python-dotenv pytube google-generativeai flask_cors youtube-transcript-api
+ 
          # Step 4: Verify installations
-         pip list | grep -E "flask|python-dotenv|pytube|google|flask_cors"
-         ```
+          pip list | grep -E "flask|python-dotenv|pytube|google|flask_cors|youtube-transcript-api"
+          ```
     *   Make sure no errors appear during installation
 
 4.  **Configure web app**
