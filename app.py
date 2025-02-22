@@ -8,8 +8,7 @@ from pytube import YouTube
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["https://saadyoutubesummarizer.netlify.app"])
-CORS(app, origins=["http://127.0.0.1:5500/index.html"])
+CORS(app, origins=["https://saadyoutubesummarizer.netlify.app", "http://127.0.0.1:5500"])
 
 @app.route('/')
 def hello_world():

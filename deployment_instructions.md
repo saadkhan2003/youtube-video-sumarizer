@@ -9,8 +9,8 @@
 2.  **Upload your files**
     *   Go to the "Files" tab
     *   Upload these files to `/home/saadkhan2003/mysite/appnew/`:
-        - `app.py` (Make sure it includes CORS configuration and uses pytube for video details)
-        - `main.py` (Make sure it has the latest error handling)
+        - `app.py` (Make sure it includes CORS configuration and uses pytube)
+        - `main.py` (Make sure it has the latest error handling and logging)
         - `.env`
         - `requirements.txt`
 
@@ -77,6 +77,7 @@
     *   Click "Reload saadkhan2003.pythonanywhere.com"
     *   Check the error logs if any issues persist
 
+
 ## Frontend Setup
 
 1.  **Update the backend URL**
@@ -85,13 +86,16 @@
     *   Replace it with: `https://saadkhan2003.pythonanywhere.com/summarize`
     *   **Important:** Make sure the URL is correct and matches your PythonAnywhere username.
 
-2.  **Deploy frontend**
-    *   Option 1: Use Netlify
-        - Sign up at [https://www.netlify.com/](https://www.netlify.com/)
-        - Upload `index.html`, `style.css`, and `script.js`
-    *   Option 2: Run locally
-        - Just open `index.html` in your browser
-
+2.  **Host frontend on PythonAnywhere**
+    *   Go to the "Web" tab on PythonAnywhere.
+    *   In the "Static files" section, add a new entry:
+        *   URL: `/static/`
+        *   Directory: `/home/saadkhan2003/mysite/appnew/static`
+    *   Create a new directory named `static` in your project directory: `/home/saadkhan2003/mysite/appnew/static`
+    *   Move `index.html`, `style.css`, and `script.js` into the `static` directory.
+    *   Update the `index.html` file to load the CSS and JavaScript files from the `/static/` directory:
+        *   `<link rel="stylesheet" href="/static/style.css">`
+        *   `<script src="/static/script.js"></script>`
 ## Testing
 
 1.  **Check if backend is running**

@@ -9,10 +9,12 @@ load_dotenv()
 def get_transcript(video_url):
     try:
         video_id = video_url.split("watch?v=")[1]
+        print(f"Fetching transcript for video ID: {video_id}")
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         text = ""
         for entry in transcript:
             text += entry["text"] + " "
+        print("Transcript fetched successfully")
         return text
     except Exception as e:
         print(f"Transcript error: {str(e)}")
@@ -38,9 +40,13 @@ def summarize(transcript):
                         }
                     }
     try:
+        print("Sending request to Gemini API...")
         response = requests.post(url, headers=headers, json=data)
         response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
-        return response.json()["candidates"][0]["content"]["parts"][0]["text"]
+        print("Received response from Gemini API")
+        summary_text = response.json()["candidates"][0]["content"]["parts"][0]["text"]
+        print("Summary parsed successfully")
+        return summary_text
     except requests.exceptions.RequestException as e:
         print(f"Gemini API request failed: {e}")
         return f"Error: API request failed. Please check your API key and network connection. Original error: {e}"
