@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from flask_cors import CORS
-import os
 from dotenv import load_dotenv
 import main  # Import the main.py file as a module
 import requests
@@ -16,14 +14,13 @@ def hello_world():
     return "<h1>YouTube Summarizer Backend is Running!</h1>"
 
 def get_video_details(video_id):
+    # Using oEmbed API which doesn't require an API key
+    url = f"https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v={video_id}&format=json"
+    print(f"Fetching video details from: {url}")
+    
     try:
-        # Using oEmbed API which doesn't require an API key
-        url = f"https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v={video_id}&format=json"
-        print(f"Fetching video details from: {url}")
-        
         response = requests.get(url)
         print(f"Response status: {response.status_code}")
-        
         response.raise_for_status()
         data = response.json()
         print(f"Response data: {data}")
