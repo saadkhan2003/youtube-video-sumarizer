@@ -9,12 +9,7 @@ import requests
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={
-    r"/summarize": {
-        "origins": ["https://saadyoutubesummarizer.netlify.app", "http://localhost:5000"],
-        "methods": ["GET", "OPTIONS"]
-    }
-})
+CORS(app)
 CORS(app)  # Enable CORS for all routes
 
 def get_video_details(video_id):
