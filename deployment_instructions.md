@@ -59,10 +59,10 @@
     if path not in sys.path:
         sys.path.append(path)
         
-    # Import the Flask application
+    # Import the Flask application (required by PythonAnywhere)
     from app import app as application
 
-    # Print debugging information
+    # Print debugging information (optional)
     print(f"Python path: {sys.path}")
     print(f"Working directory: {os.getcwd()}")
     ```
